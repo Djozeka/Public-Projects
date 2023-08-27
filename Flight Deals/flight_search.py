@@ -1,8 +1,13 @@
 import requests
 import os
 
+# Get api key from environment variable change "os.environ.get("TEQUILA_KIWI_API_KEY")" to your own api key
 TEQUILA_KIWI_API_KEY = os.environ.get("TEQUILA_KIWI_API_KEY")
-
+# Minimum stay at destination
+MIN_STAY = 7
+# Maximum stay at destination
+MAX_STAY = 15
+# DON'T CHANGE ANYTHING BELOW HERE
 
 # create headers for api call
 headers = {
@@ -32,8 +37,8 @@ class FlightSearch:
             "fly_to": destination_city_code,
             "date_from": from_time.strftime("%d/%m/%Y"),
             "date_to": to_time.strftime("%d/%m/%Y"),
-            "nights_in_dst_from": 7,
-            "nights_in_dst_to": 15,
+            "nights_in_dst_from": MIN_STAY,
+            "nights_in_dst_to": MAX_STAY,
             "flight_type": "round",
             "curr": "EUR",
             "max_stopovers": 0,

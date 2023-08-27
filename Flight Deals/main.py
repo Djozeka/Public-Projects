@@ -1,28 +1,41 @@
 #This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager classes to achieve the program requirements.
-import data_manager
 import flight_search
 import flight_data
 from datetime import datetime, timedelta
 
-sheet_data = data_manager.DataManager.get_data_from_sheet()
-
+# Maximum number of days to search for flights
+MAX_SEARCH_DAYS = 180
+# City IATA code for origin city
 ORIGIN_CITY_IATA = "BER"
+# Dictionary of destinations with maximum price, you can leave iata_code empty
+destinations = {
+    "Lisbon": {
+        "iata_code": "",
+        "maximum_price": 80
+    },
+    "Dublin": {
+        "iata_code": "",
+        "maximum_price": 52
+    }
+}
+
+# DON'T CHANGE ANYTHING BELOW HERE
+
 flight_details_list = []
 
-for row in sheet_data:
-    if row["iataCode"] == "":
-        row["iataCode"] = flight_search.FlightSearch.get_iata_code(row["city"])
-        data_manager.DataManager.update_iata_code(row["id"], row["iataCode"])
-    else:
-        flight_details = flight_search.FlightSearch.get_flight_data(
-            ORIGIN_CITY_IATA,
-            row["iataCode"],
-            (datetime.now() + timedelta(days=1)),
-            (datetime.now() + timedelta(days=180)),
-            row["lowestPrice"]
-        )
-        flight_details_list.append(flight_details)
-        print(f"{row['city']}: {row['lowestPrice']} ({len(flight_details['data'])})")
+for destination in destinations:
+    if destinations[destination]["iata_code"] == "":
+        destinations[destination]["iata_code"] = flight_search.FlightSearch.get_iata_code(destination)
+    flight_details = flight_search.FlightSearch.get_flight_data(
+        ORIGIN_CITY_IATA,
+        destinations[destination]["iata_code"],
+        (datetime.now() + timedelta(days=1)),
+        (datetime.now() + timedelta(days=MAX_SEARCH_DAYS)),
+        destinations[destination]["maximum_price"]
+    )
+    flight_details_list.append(flight_details)
+    print(f"{destination}: {destinations[destination]['maximum_price']} ({len(flight_details['data'])})")
+
 
 flight_data_list = []
 
