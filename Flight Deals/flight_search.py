@@ -7,6 +7,7 @@ TEQUILA_KIWI_API_KEY = os.environ.get("TEQUILA_KIWI_API_KEY")
 MIN_STAY = 7
 # Maximum stay at destination
 MAX_STAY = 15
+
 # DON'T CHANGE ANYTHING BELOW HERE
 
 # create headers for api call
