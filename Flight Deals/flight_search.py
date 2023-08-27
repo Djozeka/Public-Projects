@@ -41,6 +41,11 @@ class FlightSearch:
         }
         # create api call to get flight data
         response = requests.get(url=tequila_kiwi_endpoint, params=params, headers=headers)
+        if response.json()["data"] == []:
+            params["max_stopovers"] = 2
+            print("No direct flights found, searching for flights with 1 stopover")
+            response = requests.get(url=tequila_kiwi_endpoint, params=params, headers=headers)
+
         return response.json()
 
 

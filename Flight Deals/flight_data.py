@@ -8,3 +8,5 @@ class FlightData:
         self.destination_airport = destination_airport
         self.out_date = out_date
         self.return_date = return_date
+        self.stop_overs = 0
+        self.via_city = ""
